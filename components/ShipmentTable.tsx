@@ -11,8 +11,6 @@ interface ShipmentTableProps {
   pendingUpdateId: string | null;
 }
 
-/** Tracking ID with a one-click copy action — the kind of small affordance
- *  a dispatcher actually wants when relaying an ID over a call or message. */
 function TrackingId({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
 

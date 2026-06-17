@@ -7,8 +7,7 @@ const STYLES: Record<ShipmentStatus, { dot: string; text: string; bg: string }> 
   Delayed: { dot: "bg-status-delayed", text: "text-status-delayed", bg: "bg-status-delayedDim" },
 };
 
-/** Just the dot color per status — reused by the activity feed and stat tiles
- *  so every part of the UI agrees on the same status → color mapping. */
+
 export const STATUS_DOT_CLASS: Record<ShipmentStatus, string> = Object.fromEntries(
   Object.entries(STYLES).map(([status, style]) => [status, style.dot])
 ) as Record<ShipmentStatus, string>;

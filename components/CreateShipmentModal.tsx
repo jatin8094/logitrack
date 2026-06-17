@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { createShipment } from "@/lib/firestore-helpers";
+import { createShipmentAction } from "@/lib/server/shipment-actions";
+import { describeShipmentError } from "@/lib/domain/errors";
 import type { NewShipment } from "@/lib/types";
 
 interface CreateShipmentModalProps {
@@ -67,15 +68,16 @@ export function CreateShipmentModal({ onClose }: CreateShipmentModalProps) {
       status: "Pending",
     };
 
-    try {
-      await createShipment(payload);
-      onClose();
-    } catch (err) {
-      console.error("Failed to create shipment", err);
-      setSubmitError("Couldn't reach Firestore. Check your connection and try again.");
-    } finally {
-      setSubmitting(false);
+    const result = await createShipmentAction(payload);
+    setSubmitting(false);
+
+    if (!result.ok) {
+      console.error("Failed to create shipment", result.error);
+      setSubmitError(describeShipmentError(result.error));
+      return;
     }
+
+    onClose();
   }
 
   return (
